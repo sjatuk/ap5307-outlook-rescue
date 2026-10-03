@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AP5307 Outlook Rescue</title>
+<style>
+:root{--navy:#07152f;--blue:#1677ff;--cyan:#35d6ff;--violet:#8b5cf6;--gold:#ffd166;--glass:rgba(255,255,255,.10);--line:rgba(255,255,255,.18)}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#050b1c;color:white;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background:
+radial-gradient(circle at 10% 20%,rgba(53,214,255,.18),transparent 28%),
+radial-gradient(circle at 85% 15%,rgba(139,92,246,.22),transparent 30%),
+radial-gradient(circle at 55% 85%,rgba(22,119,255,.18),transparent 35%);z-index:-2}
+.stars{position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:38px 38px;opacity:.12;animation:drift 20s linear infinite}
+@keyframes drift{to{background-position:76px 38px}}
+.shell{max-width:1180px;margin:auto;padding:24px}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px}
+.brand{font-weight:900;letter-spacing:.08em}.pill{background:var(--glass);border:1px solid var(--line);padding:9px 13px;border-radius:999px;backdrop-filter:blur(12px)}
+.progress{height:8px;background:rgba(255,255,255,.09);border-radius:20px;overflow:hidden;margin:12px 0 24px}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:.5s}
+.card{background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.055));border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:0 25px 70px rgba(0,0,0,.35);backdrop-filter:blur(18px)}
+.hero{text-align:center;padding:55px 28px}.eyebrow{font-size:13px;letter-spacing:.18em;color:#9be8ff;font-weight:800}.hero h1{font-size:clamp(44px,8vw,84px);line-height:.9;margin:15px 0;background:linear-gradient(90deg,#fff,#8de9ff,#c7b5ff);-webkit-background-clip:text;color:transparent}
+.hero h2{font-size:clamp(20px,3vw,32px);font-weight:500;margin:8px}.alert{display:inline-block;margin:24px 0;padding:10px 18px;border-radius:99px;background:rgba(255,94,120,.14);border:1px solid rgba(255,94,120,.45)}
+.btn{border:0;border-radius:16px;padding:14px 22px;font-size:16px;font-weight:800;cursor:pointer;color:white;background:linear-gradient(90deg,var(--blue),var(--violet));box-shadow:0 10px 30px rgba(70,90,255,.3);transition:.2s}.btn:hover{transform:translateY(-2px) scale(1.01)}
+.btn.alt{background:rgba(255,255,255,.1);border:1px solid var(--line);box-shadow:none}.input{width:min(430px,100%);padding:15px 17px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.22);color:white;font-size:17px;outline:none}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.mission{min-height:165px;position:relative;overflow:hidden}.mission b{font-size:36px;color:#78e7ff}.mission h3{margin:8px 0}.mission.locked{opacity:.45;filter:grayscale(.6)}.mission.done:after{content:"✓";position:absolute;right:18px;top:14px;font-size:30px;color:#7dffbd}
+.screen{display:none}.screen.active{display:block;animation:enter .45s ease}@keyframes enter{from{opacity:0;transform:translateY(12px)}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.inbox{background:#f6f8fb;color:#14213d;border-radius:18px;overflow:hidden}.mail{padding:14px;border-bottom:1px solid #dde4ee;cursor:pointer;transition:.2s}.mail:hover{background:#e8f2ff}.mail strong{display:block}.tag{font-size:11px;padding:4px 7px;border-radius:8px;background:#e6efff;color:#1557b0}
+.choices{display:grid;gap:10px;margin:18px 0}.choice{padding:14px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid var(--line);cursor:pointer}.choice:hover{border-color:#62ddff;background:rgba(53,214,255,.10)}
+.feedback{display:none;padding:15px;border-radius:14px;margin-top:15px}.good{background:rgba(45,212,191,.13);border:1px solid rgba(45,212,191,.5)}.bad{background:rgba(251,113,133,.12);border:1px solid rgba(251,113,133,.45)}
+.live{border:1px solid rgba(255,209,102,.5);background:linear-gradient(135deg,rgba(255,209,102,.12),rgba(139,92,246,.10))}
+.xpflash{position:fixed;right:28px;top:90px;font-size:30px;font-weight:900;color:var(--gold);opacity:0;pointer-events:none}.xpflash.go{animation:xp 1.2s}@keyframes xp{0%{opacity:0;transform:translateY(20px)}30%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+.result{text-align:center}.score{font-size:72px;font-weight:900;background:linear-gradient(90deg,var(--gold),#fff);-webkit-background-clip:text;color:transparent}
+.confetti{position:fixed;width:9px;height:15px;top:-20px;animation:fall 3s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.small{opacity:.76;font-size:14px}.missionNo{color:#76e4ff;font-weight:800;letter-spacing:.12em}.sectionTitle{font-size:38px;margin:7px 0 10px}
+@media(max-width:780px){.grid,.two{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.card{padding:20px}.hero{padding:38px 18px}}
+</style>
+</head>
+<body><div class="stars"></div><div class="xpflash" id="xpflash">+150 XP ✨</div>
+<div class="shell">
+<div class="top"><div class="brand">AP5307 · IT SKILLS <span style="color:#51ddff">/ OUTLOOK RESCUE</span></div><div><span class="pill" id="teamPill">TEAM: —</span> <span class="pill">⭐ <span id="xp">0</span> XP</span></div></div>
+<div class="progress"><i id="bar"></i></div>
+
+<section id="start" class="screen active">
+<div class="card hero">
+<div class="eyebrow">INTERACTIVE PBL MISSION</div>
+<h1>OUTLOOK<br>RESCUE</h1><h2>The Communication Crisis</h2>
+<div class="alert">🚨 6 critical problems detected</div>
+<p>Your department has <b>40 minutes</b> to restore communication before the Student Innovation Event begins.</p>
+<p class="small">Work in teams. Discuss before you decide. Some missions require you to leave the simulation and prove the skill in real Outlook.</p>
+<input class="input" id="teamName" placeholder="Enter your team name"><br><br>
+<button class="btn" onclick="startGame()">ENTER THE MISSION →</button>
+</div></section>
+
+<section id="hub" class="screen">
+<div class="card"><div class="eyebrow">MISSION CONTROL</div><h2 class="sectionTitle">Communication systems are failing.</h2><p>Complete each mission to restore the department. Missions unlock in sequence.</p></div><br>
+<div class="grid" id="missionGrid"></div>
+</section>
+
+<section id="play" class="screen"><div id="missionContent"></div></section>
+<section id="finish" class="screen"><div class="card result"><div class="eyebrow">SYSTEM RESTORED</div><h1>🏆 MISSION COMPLETE</h1><p id="finalTeam"></p><div class="score" id="finalScore"></div><h2>OUTLOOK RESCUE SPECIALISTS</h2><p>6/6 communication problems solved</p><p class="small">Take a screenshot of this screen as your team's completion evidence.</p><button class="btn alt" onclick="restart()">RESTART</button></div></section>
+</div>
+
+<script>
+const missions=[
+{title:"Inbox Under Pressure",icon:"📥",desc:"Prioritise, filter and organise a chaotic inbox.",body:`
+<div class="two"><div class="inbox">
+<div class="mail"><strong>⚠️ Assessment Meeting Changed</strong><span>Course Coordinator · 8:03</span><br><span class="tag">calendar invite</span></div>
+<div class="mail"><strong>FREE PHONE — ACT NOW!</strong><span>unknown@reward-now.example · 8:06</span></div>
+<div class="mail"><strong>Student Innovation Event: final file</strong><span>Events Team · 8:10</span><br><span class="tag">has file</span></div>
+<div class="mail"><strong>Question about class</strong><span>Student · 8:12</span></div></div>
+<div><h3>Your inbox is filling quickly.</h3><p>The coordinator needs the team to find messages containing event files without manually opening every email. What is the most efficient first action?</p>
+<div class="choices"><div class="choice" onclick="answer(this,false)">Open every message one by one</div><div class="choice" onclick="answer(this,true)">Use Outlook Filter and select messages with files</div><div class="choice" onclick="answer(this,false)">Delete older messages</div><div class="choice" onclick="answer(this,false)">Forward the whole inbox</div></div></div></div>`},
+{title:"Automation Lab",icon:"⚙️",desc:"Build a smart response to repetitive email.",body:`<h3>Repeated event emails are overwhelming the Inbox.</h3><p>All messages from <b>events@college.example</b> should automatically go to the folder <b>Innovation Event</b>. Which solution best solves the problem?</p><div class="choices"><div class="choice" onclick="answer(this,false)">Search for the sender every morning</div><div class="choice" onclick="answer(this,true)">Create a rule: From = events@college.example → Move to Innovation Event</div><div class="choice" onclick="answer(this,false)">Mark every message as High Importance</div></div>`},
+{title:"People Network",icon:"👥",desc:"Choose an efficient way to communicate with a recurring team.",body:`<h3>You repeatedly email the same six event volunteers.</h3><p>The coordinator wants one reusable recipient name instead of typing six addresses each time. What should your team create?</p><div class="choices"><div class="choice" onclick="answer(this,false)">Six new folders</div><div class="choice" onclick="answer(this,true)">A contact group containing the six volunteers</div><div class="choice" onclick="answer(this,false)">Six calendar events</div></div>`},
+{title:"Calendar Collision",icon:"📅",desc:"Resolve a scheduling challenge and prove it in Outlook.",body:`<div class="two"><div><h3>Calendar Crisis</h3><p>The final briefing must be scheduled for <b>Tuesday, 10:00–10:30</b>. All team members must receive an invitation and the team needs a reminder 15 minutes beforehand.</p><p>Which combination is appropriate?</p><div class="choices"><div class="choice" onclick="answer(this,true)">New Event + attendees + 15-minute reminder + Send</div><div class="choice" onclick="answer(this,false)">New email only</div><div class="choice" onclick="answer(this,false)">Create a contact and wait</div></div></div><div class="card live"><div class="missionNo">⚡ LIVE OUTLOOK CHALLENGE</div><h3>Prove it.</h3><p>After solving the decision, open your real Outlook Calendar. Create a practice event with your group, add the required details and set a reminder. Do not include confidential information.</p></div></div>`},
+{title:"Mission Control",icon:"☑️",desc:"Organise responsibilities using Outlook/To Do.",body:`<h3>Four event tasks have no owners.</h3><p>Your team needs a shared list where tasks can contain due dates, reminders, notes and assignments. Which workflow matches what you learned?</p><div class="choices"><div class="choice" onclick="answer(this,true)">Create a list in Microsoft To Do, add tasks/details, share the list, then assign tasks</div><div class="choice" onclick="answer(this,false)">Send four unrelated emails and hope people remember</div><div class="choice" onclick="answer(this,false)">Create four contacts</div></div>`},
+{title:"Final Decision",icon:"📊",desc:"Use a poll to reach a transparent team decision.",body:`<h3>The team must choose the best time for the event rehearsal.</h3><p>There are three possible times and 18 participants. The coordinator wants a choice embedded in an Outlook email and wants responses to be tracked. What feature fits the problem?</p><div class="choices"><div class="choice" onclick="answer(this,false)">Read receipt</div><div class="choice" onclick="answer(this,true)">Create an Outlook Poll in a new email and track responses in the thread</div><div class="choice" onclick="answer(this,false)">Email signature</div></div><div class="card live" style="margin-top:18px"><div class="missionNo">🤖 TEAM REFLECTION</div><p>Before finishing, discuss: <b>Which Outlook feature from today's mission would save your team the most time in real university work, and why?</b></p></div>`}
+];
+let state={team:"",xp:0,done:0,current:0,answered:false};
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');scrollTo(0,0)}
+function startGame(){let n=document.getElementById('teamName').value.trim();if(!n){alert("Please enter a team name.");return}state.team=n;document.getElementById('teamPill').textContent="TEAM: "+n.toUpperCase();renderHub();show('hub')}
+function renderHub(){let g=document.getElementById('missionGrid');g.innerHTML="";missions.forEach((m,i)=>{let open=i<=state.done;let d=document.createElement('div');d.className="card mission "+(open?"":"locked")+" "+(i<state.done?"done":"");d.innerHTML=`<b>${m.icon}</b><div class="missionNo">MISSION 0${i+1}</div><h3>${m.title}</h3><p class="small">${m.desc}</p>${open&&i>=state.done?'<button class="btn" onclick="openMission('+i+')">OPEN MISSION</button>':i<state.done?'<span class="small">RESTORED ✓</span>':'<span class="small">🔒 LOCKED</span>'}`;g.appendChild(d)});update()}
+function openMission(i){state.current=i;state.answered=false;document.getElementById('missionContent').innerHTML=`<div class="card"><div class="missionNo">MISSION 0${i+1} · ${missions[i].icon}</div><h2 class="sectionTitle">${missions[i].title}</h2>${missions[i].body}<div id="fbGood" class="feedback good"><b>✓ Strong decision.</b><br>Your team has restored this part of the system.<br><br><button class="btn" onclick="completeMission()">COMPLETE MISSION +150 XP</button></div><div id="fbBad" class="feedback bad"><b>Not the best solution yet.</b><br>Discuss the problem as a team and try another approach.</div></div>`;show('play')}
+function answer(el,ok){if(state.answered)return;if(ok){state.answered=true;el.style.borderColor="#66ffc8";document.getElementById('fbGood').style.display="block";document.getElementById('fbBad').style.display="none"}else{document.getElementById('fbBad').style.display="block";el.style.borderColor="#ff7890"}}
+function completeMission(){if(state.current!==state.done)return;state.xp+=150;state.done++;flash();update();if(state.done===missions.length){setTimeout(endGame,500)}else{renderHub();show('hub')}}
+function update(){document.getElementById('xp').textContent=state.xp;document.getElementById('bar').style.width=(state.done/missions.length*100)+"%"}
+function flash(){let f=document.getElementById('xpflash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go')}
+function endGame(){document.getElementById('finalTeam').textContent="TEAM "+state.team.toUpperCase();document.getElementById('finalScore').textContent=state.xp+" XP";show('finish');confetti()}
+function confetti(){for(let i=0;i<70;i++){let c=document.createElement('i');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=`hsl(${Math.random()*360},90%,65%)`;c.style.animationDelay=Math.random()*1.5+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),5000)}}
+function restart(){location.reload()}
+</script></body></html>
