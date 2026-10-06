@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "teams": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['teamName','xp','mission','status','elapsedSeconds','updatedAt'])",
+        "teamName": {".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 40"},
+        "xp": {".validate": "newData.isNumber() && newData.val() >= 0"},
+        "mission": {".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 9"},
+        "status": {".validate": "newData.val() === 'playing' || newData.val() === 'finished'"},
+        "elapsedSeconds": {".validate": "newData.isNumber() && newData.val() >= 0"},
+        "updatedAt": {".validate": "newData.isNumber()"},
+        "finishedAt": {".validate": "!newData.exists() || newData.isNumber()"},
+        "$other": {".validate": false}
+      }
+    }
+  }
+}
